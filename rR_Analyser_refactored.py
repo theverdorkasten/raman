@@ -78,12 +78,12 @@ class Table:
                        [self.spectrum(i)
                             .ydata for i in spectrum_numbers])
         mcrar.fit(A, ST=ST0)
-        C = Timeplots()
+        C = Timeplots(mode=self.mode)
         for i in range(len(mcrar.C_.transpose())):
             C["Component " + str(i)] = Timeplot(
                 self.spectrum_numbers,
                 mcrar.C_.transpose()[i])
-        ST = Spectra()
+        ST = Spectra(mode=self.mode)
         for i in range(len(mcrar.ST_)):
             ST["Component " + str(i)] = Spectrum(
                 self.wavenumbers,
