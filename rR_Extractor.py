@@ -25,15 +25,15 @@ def splines(x, y, steps=None):
 
 def get_wavenumber(df, wavenumber: float):  # => tuple (np.array, np.array)
     data = df.filter(items=[wavenumber], axis=0)
-    x = data.columns.to_numpy()                  # get column names
-    y = data.to_numpy()[0, :]                     # get values from the row
+    x = data.columns.to_numpy()        # get column names
+    y = data.to_numpy()[0, :]          # get values from the row
     return (x, y)
 
 
 def get_spectrum(df, spectrum: int):
     data = df.filter(items=[spectrum], axis=1)
-    x = data.index.to_numpy()                    # get row names
-    y = data.to_numpy()[:, 0]                     # get values from the column
+    x = data.index.to_numpy()          # get row names
+    y = data.to_numpy()[:, 0]          # get values from the column
     return (x, y)
 
 
@@ -92,3 +92,31 @@ def BGR(data, method='ZhangFit', polynomial_degree=2, lambda_=100,
     else:
         raise Exception('Method not found. Possible options are: ZhangFit, ModPoly and IModPoly. Check spelling.')
     return BGR_output
+
+
+class RamanFrame:
+    def __init__(self, path):
+        # assume single-column format
+        self._data = get_wide_table(path)
+
+    def plot(self):
+        pass
+
+    def snapshot(self, number):
+        data = self._data.filter(items=[number], axis=1)
+        x = data.index.to_numpy()                   # get row names
+        y = data.to_numpy()[:, 0]                   # get values from the column
+        return Spectrum(x, y, "Snapshot " + str(number),
+                        "wavenumber / cm$^{-1}")
+
+
+class Spectrum:
+    def __init__(self, xdata, ydata, title=None,
+                 xtitle="wavenumber / cm$^{-1}"):
+        self._xdata = xdata
+        self._ydata = ydata
+        self._title = title
+        self._xtitle = xtitle
+
+    def plot(self):
+        pass
